@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Running Workout Generator</title>
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('track.jpg') center center fixed no-repeat;
+            background-size: cover;
+            color: #333;
+        }
+
+        header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        select, input[type="range"], input[type="number"], select[multiple] {
+            width: calc(100% - 16px);
+            padding: 12px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        select[multiple] {
+            height: 120px;
+            overflow-y: scroll;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #confirmationMessage {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #3498db;
+        }
+
+        output {
+            display: block;
+            font-weight: bold;
+            text-align: center;
+            margin-top: -10px;
+            position: relative;
+            font-size: 20px;
+            color: black;
+        }
+
+        h3 {
+            color: #3498db;
+            margin-top: 20px;
+            font-size: 24px;
+        }
+
+        p {
+            font-size: 18px;
+            color: black;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        /* Adjusted font size for specific elements */
+        input[type="range"],
+input[type="number"],
+output,
+#trainingDuration,
+#weight,
+#height,
+#age,
+#confirmationMessage {
+    font-size: 16px;
+}
+        
+
+        /* Made main workout runs/sprints a bit smaller */
+        #confirmationMessage h3 {
+            font-size: 20px;
+        }
+
+        #confirmationMessage p {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Custom Running Workout Generator</h1>
+    </header>
+
+    <form id="runnerProfileForm">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select>
+
+        
+<label for="trainingDuration">Training Duration (mins):</label>
+<input type="range" id="trainingDuration" name="trainingDuration" min="30" max="180" step="1" value="30">
+<output for="trainingDuration">30 mins</output>
+
+<label for="weight">Weight (kg):</label>
+<input type="range" id="weight" name="weight" min="25" max="180" step="1" value="25">
+<output for="weight">25 kg</output>
+
+<label for="height">Height (cm):</label>
+<input type="range" id="height" name="height" min="80" max="200" step="1" value="80">
+<output for="height">80 cm</output>
+
+<label for="age">Age:</label>
+<input type="range" id="age" name="age" min="12" max="80" step="1" value="12">
+<output for="age">12 years</output>
+
+<label for="experience">Experience:</label>
+<select id="experience" name="experience">
+    <option value="new">I am new to running</option>
+    <option value="fewMonths">I have been running for the last few months</option>
+    <option value="twoYears">I have been running consistently for the last two years or more</option>
+</select>
+
+<label for="exerciseRoutine">Exercise or Sports Routine:</label>
+<select id="exerciseRoutine" name="exerciseRoutine">
+    <option value="often">I exercise and/or play sports often</option>
+    <option value="sometimes">I exercise and/or play sports sometimes</option>
+    <option value="seldom">I seldom exercise and/or play sports</option>
+</select>
+
+<label for="focus">I want to focus on…</label>
+<select id="focus" name="focus">
+    <option value="sprinting">Sprinting</option>
+    <option value="middleDistance">Middle Distance Running</option>
+    <option value="longDistance">Long Distance Running</option>
+</select>
+
+<label for="injuryHistory">I have suffered from a severe/chronic injury in my legs before:</label>
+<select id="injuryHistory" name="injuryHistory">
+    <option value="true">True</option>
+    <option value="false">False</option>
+</select>
+
+<label for="trainingDays">I want to train...</label>
+<select id="trainingDays" name="trainingDays">
+    <option value="1">1 day a week</option>
+    <option value="2">2 days a week</option>
+    <option value="3">3 days a week</option>
+    <option value="4">4 days a week</option>
+    <option value="5">5 days a week</option>
+    <option value="6">6 days a week</option>
+    <option value="7">7 days a week</option>
+</select>
+
+        <button type="button" onclick="generateWorkout()">Generate Workout</button>
+
+        <div id="confirmationMessage">
+            <!-- Results will be displayed here -->
+        </div>
+
+        <script>
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => {
+                const output = slider.nextElementSibling;
+                output.innerHTML = `${slider.value}`;
+
+                slider.addEventListener('input', () => {
+                    output.innerHTML = `${slider.value}`;
+                });
+            });
+            
+            function generateWorkout() {
+                let gender = document.getElementById('gender').value;
+                let duration = parseInt(document.getElementById('trainingDuration').value);
+                let weight = parseInt(document.getElementById('weight').value);
+                let height = parseInt(document.getElementById('height').value);
+                let age = parseInt(document.getElementById('age').value);
+                let experience = document.getElementById('experience').value;
+                let routine = document.getElementById('exerciseRoutine').value;
+                let focus = document.getElementById('focus').value;
+                let preInjured = document.getElementById('injuryHistory').value;
+                let frequency = parseInt(document.getElementById('trainingDays').value);
+
+                let bmi = weight / ((height / 100) ** 2);
+
+                let fitness_level = 0;
+                let experience_level = 0;
+                let risk_level = 0;
+
+                
+
+                if (gender === "male") fitness_level += 3;
+                else if (gender === "female") fitness_level += 0;
+                else if (gender === "other") fitness_level += 0;
+
+                if (bmi < 17.5) fitness_level += 6;
+                else if (bmi >= 17.5 && bmi < 18) fitness_level += 8;
+                else if (bmi >= 18 && bmi < 21) fitness_level += 10;
+                else if (bmi >= 21 && bmi < 24) fitness_level += 6;
+                else if (bmi >= 24 && bmi < 27.5) fitness_level +=3;
+                else if (bmi >= 27.5 && bmi < 30) fitness_level += 1;
+                else if (bmi >= 30) fitness_level += 0;
+
+                if (age >= 12 && age <= 30) fitness_level += 7;
+                else if (age >= 31 && age <= 45) fitness_level += 4;
+                else if (age >= 46) fitness_level += 0;
+
+                if (routine === "often") fitness_level += 10;
+                else if (routine === "sometimes") fitness_level += 5;
+                else if (routine === "seldom") fitness_level += 0;
+
+                let fitness_level_category;
+                if (fitness_level >= 0 && fitness_level <= 6) fitness_level_category = "Poor";
+                else if (fitness_level >=7 && fitness_level <= 14) fitness_level_category = "Fair";
+                else if (fitness_level >= 15 && fitness_level <= 20) fitness_level_category = "Good";
+                else if (fitness_level >= 21 && fitness_level <= 25) fitness_level_category = "Very Good";
+                else if (fitness_level >= 26) fitness_level_category = "Exceptional";
+
+                if (experience === "new") experience_level += 0;
+                else if (experience === "fewMonths") experience_level += 7;
+                else if (experience === "twoYears") experience_level += 14;
+
+                if (routine === "often") experience_level += 6;
+                else if (routine === "sometimes") experience_level += 3;
+                else if (routine === "seldom") experience_level += 0;
+
+                if (gender === "male") risk_level += 2;
+                else if (gender === "female") risk_level +=0;
+                else if (gender === "other") risk_level += 0;
+
+                if (bmi > 25) risk_level += 2;
+                if (preInjured === "true") risk_level += 3;
+                if (weight > 80) risk_level += 2;
+
+                let time = (frequency * duration) / 175;
+                risk_level += time;
+
+
+                // Calculate workout_scope
+                let workout_scope = Math.max(0, (fitness_level + experience_level) - risk_level);
+                let workout_scope_category;
+                if (workout_scope >= 41) workout_scope_category = "Exceptional";
+                else if (workout_scope >= 31 && workout_scope <= 40) workout_scope_category = "Above Average";
+                else if (workout_scope >= 21 && workout_scope <= 30) workout_scope_category = "Average";
+                else if (workout_scope >= 11 && workout_scope <= 20) workout_scope_category = "Below Average";
+                else if (workout_scope >= 0 && workout_scope <= 11) workout_scope_category = "Poor";
+// Generate warm-up routine
+let lapTime;
+
+if (fitness_level_category === "Poor" || fitness_level_category === "Fair") {
+    lapTime = 5.5;
+} else if (fitness_level_category === "Good" || fitness_level_category === "Very Good") {
+    lapTime = 4;
+} else if (fitness_level_category === "Exceptional") {
+    lapTime = 3;
+}
+
+let warmUpTime = duration / 4;
+let jogLaps = Math.max(1, Math.min(5, Math.round(warmUpTime / (2 * lapTime))));
+
+let stretchAndDrills = Math.floor(jogLaps / 2);
+let drillRepetitions = Math.min(5, Math.max(1, Math.floor(duration / 30)));
+
+
+// Determine drills based on duration
+let drills = [
+    { name: 'High Knees', duration: drillRepetitions },
+    { name: 'Butt Kicks', duration: drillRepetitions },
+    { name: 'A Skips', duration: drillRepetitions },
+    { name: 'B Skips', duration: drillRepetitions },
+    { name: 'Lateral Shuffles', duration: drillRepetitions },
+    { name: 'Karaoke', duration: drillRepetitions },
+    { name: 'Skipping', duration: drillRepetitions },
+    // Add more drills as needed
+    { name: 'Dynamic Lunges', duration: drillRepetitions },
+];
+
+if (focus === "sprinting") {
+                drills.push(
+                    { name: 'Single Leg Hops (Left)', duration: drillRepetitions },
+                    { name: 'Single Leg Hops (Right)', duration: drillRepetitions },
+                    { name: 'Broad Jumps', duration: drillRepetitions }
+                    // Add more sprinting drills as needed
+                );
+            }
+
+            let jogLapsText = jogLaps === 1 ? 'lap' : 'laps';
+
+            let warmUpRoutine = `
+                <h3>Warm-Up Routine</h3>
+                <p><strong>Jog ${jogLaps} ${jogLapsText} (Distance: ${jogLaps * 400} meters)</strong></p>
+                <p><strong>Stretches and Drills (until 20m line):</strong></p>
+                <ul style="list-style-type: none; padding: 0; margin: 0;">
+                    ${drills.map(drill => `<li><strong>${drill.name}:</strong> x${drill.duration}</li>`).join('')}
+                </ul>
+            `;
+
+            let mainWorkoutTime = (5 / 8) * duration;
+            let mainWorkoutDuration = 0;
+            let mainWorkoutRoutine = '';
+
+    if (focus === "sprinting") {
+        let sprintDurations = {
+            '30m': 3,
+            '50m': 4,
+            '100m': 7,
+            '200m': 9,
+            '400m': 11,
+        };
+        function getAdjustedSprintDuration(category, originalDuration) {
+    // Adjust sprint duration based on workout scope category
+    switch (category) {
+        case 'Poor':
+            return originalDuration * 1.4; // 40% longer
+        case 'Below Average':
+            return originalDuration * 1.25; // 25% longer
+        case 'Average':
+            return originalDuration; // no change
+        case 'Above Average':
+            return originalDuration * 0.8; // 20% shorter
+        case 'Exceptional':
+            return originalDuration * 0.65; // 35% shorter
+        default:
+            return originalDuration; // default to original duration
+    }
+}
+
+        let sprintRepetitions = {
+            '30m': 0,
+            '50m': 0,
+            '100m': 0,
+            '200m': 0,
+            '400m': 0,
+        };
+
+        let sprintOrder = ['30m', '50m', '100m', '200m', '400m']
+
+        let addRepetition = (sprint) => {
+            sprintRepetitions[sprint]++;
+        };
+
+        let addSet = (sprint) => {
+            sprintRepetitions[sprint]++;
+        };
+
+        function getMinRepetitionSprint() {
+    return sprintOrder.reduce((minSprint, sprint) => {
+        if (
+            sprintRepetitions[sprint] < sprintRepetitions[minSprint] ||
+            (sprintRepetitions[sprint] === sprintRepetitions[minSprint] &&
+                sprintDurations[sprint] < sprintDurations[minSprint])
+        ) {
+            return sprint; // Update minSprint if conditions are met
+        } else {
+            return minSprint;
+        }
+    }, sprintOrder[0]);
+}
+
+while (mainWorkoutDuration < mainWorkoutTime && mainWorkoutDuration <= (5 / 8) * duration) {
+    let currentSprint = getMinRepetitionSprint();
+    let adjustedDuration = getAdjustedSprintDuration(workout_scope_category, sprintDurations[currentSprint]);
+
+    let tempDuration = mainWorkoutDuration + adjustedDuration;
+
+    if (tempDuration <= mainWorkoutTime) {
+        addSet(currentSprint);
+        mainWorkoutDuration = tempDuration;
+    } else {
+        // Adjust sets based on the minimum repetition and shortest adjusted duration
+        let maxSprint = sprintOrder.reduce((max, sprint) => {
+            let adjustedMaxDuration = getAdjustedSprintDuration(workout_scope_category, sprintDurations[max]);
+
+            if (sprintRepetitions[sprint] < sprintRepetitions[max] ||
+                (sprintRepetitions[sprint] === sprintRepetitions[max] && adjustedMaxDuration < adjustedDuration)
+            ) {
+                return sprint;
+            } else {
+                return max;
+            }
+        }, sprintOrder[0]); // Initialize with the first sprint type
+
+        // Add shorter adjusted duration sets if they don't cause exceedance
+        for (let sprint of sprintOrder) {
+            let adjustedDuration = getAdjustedSprintDuration(workout_scope_category, sprintDurations[sprint]);
+
+            if (adjustedDuration < getAdjustedSprintDuration(workout_scope_category, sprintDurations[maxSprint])) {
+                let tempDuration = mainWorkoutDuration + adjustedDuration;
+                if (tempDuration <= mainWorkoutTime) {
+                    addSet(sprint);
+                    mainWorkoutDuration = tempDuration;
+                } else {
+                    break; // Stop if adding the next set exceeds the main workout time
+                }
+            }
+        }
+
+        break; // Stop the loop after adjusting sets
+    }
+}
+
+        mainWorkoutRoutine = `
+            <h3>Main Workout Routine</h3>
+            ${sprintOrder.map(sprint => sprintRepetitions[sprint] > 0 ? `<p><strong>${sprint} Sprint:</strong> ${sprintRepetitions[sprint]} set${sprintRepetitions[sprint] > 1 ? 's' : ''}</p>` : '').join('')}
+        `;
+    }
+
+
+if (focus === "middleDistance") {
+    let middleDistanceDurations = {
+        '400m': 4,
+        '800m': 6,
+        '1200m': 11,
+        '1600m': 15,
+    };
+
+    let middleDistanceRepetitions = {
+        '400m': 0,
+        '800m': 0,
+        '1200m': 0,
+        '1600m': 0,
+    };
+
+    let middleDistanceOrder = ['400m', '800m', '1200m', '1600m',];
+
+    let addRepetition = (distance) => {
+            middleDistanceRepetitions[distance]++;
+        };
+
+        let addSet = (distance) => {
+            middleDistanceRepetitions[distance]++;
+        };
+
+    function getMinRepetitionMiddleDistance() {
+        return middleDistanceOrder.reduce((minDistance, distance) => {
+            if (
+            middleDistanceRepetitions[distance] < middleDistanceRepetitions[minDistance] ||
+            (middleDistanceRepetitions[distance] === middleDistanceRepetitions[minDistance] &&
+                middleDistanceDurations[distance] < middleDistanceDurations[minDistance])
+        ) {
+            return distance; // Update minDistance if conditions are met
+        } else {
+            return minDistance;
+        }
+    }, middleDistanceOrder[0]);
+}
+
+function getAdjustedMiddleDistanceDuration(category, originalDuration) {
+    // Adjust middle-distance duration based on workout scope category
+    switch (category) {
+        case 'Poor':
+            return originalDuration * 1.35; // 35% longer
+        case 'Below Average':
+            return originalDuration * 1.15; // 15% longer
+        case 'Average':
+            return originalDuration; // no change
+        case 'Above Average':
+            return originalDuration * 0.85; // 15% shorter
+        case 'Exceptional':
+            return originalDuration * 0.65; // 30% shorter
+        default:
+            return originalDuration; // default to original duration
+    }
+}
+
+// ... (previous code)
+
+while (mainWorkoutDuration < mainWorkoutTime && mainWorkoutDuration <= (5 / 8) * duration) {
+    let currentDistance = getMinRepetitionMiddleDistance();
+    let adjustedDuration = getAdjustedMiddleDistanceDuration(workout_scope_category, middleDistanceDurations[currentDistance]);
+
+    let tempDuration = mainWorkoutDuration + adjustedDuration;
+
+    if (tempDuration <= mainWorkoutTime) {
+        addSet(currentDistance);
+        mainWorkoutDuration = tempDuration;
+    } else {
+        // Adjust sets based on the minimum repetition and shortest adjusted duration
+        let maxDistance = middleDistanceOrder.reduce((max, distance) => {
+            let adjustedMaxDuration = getAdjustedMiddleDistanceDuration(workout_scope_category, middleDistanceDurations[max]);
+
+            if (
+                middleDistanceRepetitions[distance] < middleDistanceRepetitions[max] ||
+                (middleDistanceRepetitions[distance] === middleDistanceRepetitions[max] &&
+                    adjustedMaxDuration < adjustedDuration)
+            ) {
+                return distance;
+            } else {
+                return max;
+            }
+        }, middleDistanceOrder[0]); // Initialize with the first middle distance type
+
+        // Add shorter adjusted duration sets if they don't cause exceedance
+        for (let distance of middleDistanceOrder) {
+            let adjustedDuration = getAdjustedMiddleDistanceDuration(workout_scope_category, middleDistanceDurations[distance]);
+
+            if (adjustedDuration < getAdjustedMiddleDistanceDuration(workout_scope_category, middleDistanceDurations[maxDistance])) {
+                let tempDuration = mainWorkoutDuration + adjustedDuration;
+                if (tempDuration <= mainWorkoutTime) {
+                    addSet(distance);
+                    mainWorkoutDuration = tempDuration;
+                } else {
+                    break; // Stop if adding the next set exceeds the main workout time
+                }
+            }
+        }
+
+        break; // Stop the loop after adjusting sets
+    }
+}
+
+let middleDistanceRoutine = `
+        <h3>Main Workout Routine</h3>
+        ${middleDistanceOrder.map(distance => middleDistanceRepetitions[distance] > 0 ? `<p><strong>${distance} Run:</strong> ${middleDistanceRepetitions[distance]} set${middleDistanceRepetitions[distance] > 1 ? 's' : ''}</p>` : '').join('')}
+    `;
+
+    mainWorkoutRoutine = middleDistanceRoutine;
+}
+
+if (focus == "longDistance") {
+    let longDistanceDurations = {
+        '800m': 6,
+        '1600m': 15,
+        '3200m': 33,
+        '5000m': 53,
+    };
+
+    let longDistanceRepetitions = {
+        '800m': 0,
+        '1600m': 0,
+        '3200m': 0,
+        '5000m': 0,
+    };
+
+    let longDistanceOrder = ['800m', '1600m', '3200m','5000m',];
+
+    let addRepetitionLongDistance = (distance) => {
+    longDistanceRepetitions[distance]++;
+};
+
+let addSetLongDistance = (distance) => {
+    longDistanceRepetitions[distance]++;
+};
+
+function getMinRepetitionLongDistance() {
+    return longDistanceOrder.reduce((minDistance, distance) => {
+        if (
+            longDistanceRepetitions[distance] < longDistanceRepetitions[minDistance] ||
+            (longDistanceRepetitions[distance] === longDistanceRepetitions[minDistance] &&
+                longDistanceDurations[distance] < longDistanceDurations[minDistance])
+        ) {
+            return distance; // Update minDistance if conditions are met
+        } else {
+            return minDistance;
+        }
+    }, longDistanceOrder[0]);
+}
+function getAdjustedLongDistanceDuration(category, originalDuration) {
+    // Adjust long-distance duration based on workout scope category
+    switch (category) {
+        case 'Poor':
+            return originalDuration * 1.35; // 35% longer
+        case 'Below Average':
+            return originalDuration * 1.15; // 15% longer
+        case 'Average':
+            return originalDuration; // no change
+        case 'Above Average':
+            return originalDuration * 0.85; // 15% shorter
+        case 'Exceptional':
+            return originalDuration * 0.70; // 30% shorter
+        default:
+            return originalDuration; // default to original duration
+    }
+}
+
+while (mainWorkoutDuration < mainWorkoutTime && mainWorkoutDuration <= (5 / 8) * duration) {
+    let currentDistance = getMinRepetitionLongDistance();
+    let adjustedDuration = getAdjustedLongDistanceDuration(workout_scope_category, longDistanceDurations[currentDistance]);
+
+    let tempDuration = mainWorkoutDuration + adjustedDuration;
+
+    if (tempDuration <= mainWorkoutTime) {
+        addSetLongDistance(currentDistance);
+        mainWorkoutDuration = tempDuration;
+    } else {
+        // Adjust sets based on the minimum repetition and shortest adjusted duration
+        let maxDistance = longDistanceOrder.reduce((max, distance) => {
+            let adjustedMaxDuration = getAdjustedLongDistanceDuration(workout_scope_category, longDistanceDurations[max]);
+
+            if (
+                longDistanceRepetitions[distance] < longDistanceRepetitions[max] ||
+                (longDistanceRepetitions[distance] === longDistanceRepetitions[max] &&
+                    adjustedMaxDuration < adjustedDuration)
+            ) {
+                return distance;
+            } else {
+                return max;
+            }
+        }, longDistanceOrder[0]); // Initialize with the first long distance type
+
+        // Add shorter adjusted duration sets if they don't cause exceedance
+        for (let distance of longDistanceOrder) {
+            let adjustedDuration = getAdjustedLongDistanceDuration(workout_scope_category, longDistanceDurations[distance]);
+
+            if (adjustedDuration < getAdjustedLongDistanceDuration(workout_scope_category, longDistanceDurations[maxDistance])) {
+                let tempDuration = mainWorkoutDuration + adjustedDuration;
+                if (tempDuration <= mainWorkoutTime) {
+                    addSetLongDistance(distance);
+                    mainWorkoutDuration = tempDuration;
+                } else {
+                    break; // Stop if adding the next set exceeds the main workout time
+                }
+            }
+        }
+
+        break; // Stop the loop after adjusting sets
+    }
+}
+
+
+let longDistanceRoutine = `
+    <h3>Main Workout Routine</h3>
+    ${longDistanceOrder.map(distance => longDistanceRepetitions[distance] > 0 ? `<p><strong>${distance} Run:</strong> ${longDistanceRepetitions[distance]} set${longDistanceRepetitions[distance] > 1 ? 's' : ''}</p>` : '').join('')}
+`;
+
+mainWorkoutRoutine = longDistanceRoutine;
+}
+// Calculate cool down time
+let coolDownTime = (1 / 8) * duration;
+
+// Calculate cool down laps
+let coolDownLaps = Math.max(1, Math.min(5, Math.round(coolDownTime / (2 * lapTime))));
+
+// Calculate cool down lap time
+let coolDownLapTime;
+if (fitness_level_category === "Poor" || fitness_level_category === "Fair") {
+    coolDownLapTime = 5.5;
+} else if (fitness_level_category === "Good" || fitness_level_category === "Very Good") {
+    coolDownLapTime = 4;
+} else if (fitness_level_category === "Exceptional") {
+    coolDownLapTime = 3;
+}
+
+// Calculate cool down laps text
+let coolDownLapsText = coolDownLaps === 1 ? 'lap' : 'laps';
+
+// Calculate cool down lap repetitions
+let coolDownLapRepetitions = Math.floor(coolDownLaps / 2);
+
+// Calculate cool down routine time (excluding lap time)
+let coolDownRoutineTime = coolDownTime - (coolDownLapTime * coolDownLapRepetitions);
+
+// Calculate repetitions for each stretch
+let stretchRepetitions = Math.min(5, Math.max(1, Math.floor(coolDownRoutineTime / (30 * 1000))));
+
+let coolDownRoutine = `
+        <h3>Cool Down Routine</h3>
+        <p><strong>Jog ${coolDownLaps} ${coolDownLaps === 1 ? 'lap' : 'laps'} (Distance: ${coolDownLaps * 400} meters)</strong></p>
+        <p><strong>Stretches (30s each)</strong></p>
+        <ul style="list-style-type: none; padding: 0; margin: 0;">
+            <li><strong>Standing Hamstring Stretch (Right Leg):</strong> x${stretchRepetitions}</li>
+            <li><strong>Standing Hamstring Stretch (Left Leg):</strong> x${stretchRepetitions}</li>
+            <li><strong>Butterfly Kicks:</strong> x${stretchRepetitions}</li>
+            <li><strong>Standing Lunge Stretch (Right Leg):</strong> x${stretchRepetitions}</li>
+            <li><strong>Standing Lunge Stretch (Left Leg):</strong> x${stretchRepetitions}</li>
+            <li><strong>Overhead Stretch:</strong> x${stretchRepetitions}</li>
+            <li><strong>Touching Toes:</strong> x${stretchRepetitions}</li>
+            <!-- Add more stretches as needed -->
+        </ul>
+    `;
+
+    // Generate workout program
+    let resultMessage = `
+        <h2>Your Custom Workout Program</h2>
+        ${warmUpRoutine}
+        ${mainWorkoutRoutine}
+        ${coolDownRoutine}
+    `;
+
+    document.getElementById('confirmationMessage').innerHTML = resultMessage;
+    document.getElementById('confirmationMessage').style.display = 'block';
+}
+</script>
+    </form>
+</body>
+</html>
